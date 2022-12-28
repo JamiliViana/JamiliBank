@@ -28,7 +28,7 @@ class BancoServiceImpl(val bancoRepository: BancoRepository) : BancoService {
         val conta = contas[idConta]
 //        if (conta != null){
 //          val setSaldoAumentado = this.bancoRepository.setSaldoAumentado(valor,idConta)
-        conta!!.saldo = valor + conta!!.saldo
+        conta!!.saldo = valor + conta.saldo
             return contas[idConta]
 //        }else return throw ContaNotFoundException
     }
@@ -38,7 +38,7 @@ class BancoServiceImpl(val bancoRepository: BancoRepository) : BancoService {
 //        if (conta != null){
 //          val setSaldoReduzido = this.bancoRepository.setSaldoReduzido(valor,idConta)
 //          if (conta?.saldo!! > valor) {
-        conta!!.saldo = valor - conta!!.saldo
+        conta!!.saldo = valor - conta.saldo
         return contas[idConta]
 //          }else return throw SaldoNotEnoughException
 //        }else return throw ContaNotFoundException

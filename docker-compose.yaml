@@ -9,7 +9,6 @@ services:
       MYSQL_DATABASE: jamilibank
     ports:
       - "3307:3306"
-    volumes:
-      - ./docker/volume_mysql:/var/lib/mysql
+
 
 

@@ -1,7 +1,9 @@
 package com.project.banco.service
 
 import com.project.banco.domains.Conta
+import org.springframework.stereotype.Service
 
+@Service
 interface BancoService {
 
     fun createAccount(conta: Conta)
