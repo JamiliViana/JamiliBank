@@ -1,25 +1,28 @@
 package com.project.banco.repository.impl
 
+import com.project.banco.controller.request.ContaRequest
 import com.project.banco.domains.Conta
 import com.project.banco.repository.BancoRepository
+import com.project.banco.repository.jpa.entity.ClienteEntity
 import com.project.banco.repository.jpa.entity.ContaEntity
 import com.project.banco.repository.jpa.repository.BancoJpaRepository
 import org.springframework.stereotype.Component
+import java.util.*
 
 @Component
 class BancoRepositoryImpl(val bancoJpaRepository: BancoJpaRepository): BancoRepository {
-    private fun mapContaEntity (conta: Conta) = ContaEntity(
+
+    private fun mapContaEntity (conta: ContaRequest) = ContaEntity(
         idConta = conta.idConta,
-        saldo = conta.saldo,
-        cliente = conta.cliente
+        saldo = conta.saldo
     )
 
-    override fun save(conta: Conta) {
+    override fun save(conta: ContaRequest) {
         bancoJpaRepository.save(mapContaEntity(conta))
     }
 
-    override fun findById(idConta: Long) {
-        bancoJpaRepository.findById(idConta)
+    override fun findById(idConta: Long): Optional<ContaEntity> {
+        return bancoJpaRepository.findById(idConta)
     }
 
     override fun deleteById(idConta: Long) {
