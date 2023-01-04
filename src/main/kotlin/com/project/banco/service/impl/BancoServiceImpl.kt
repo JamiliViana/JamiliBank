@@ -1,7 +1,7 @@
 package com.project.banco.service.impl
 
-import com.project.banco.domains.Conta
 import com.project.banco.controller.request.ContaRequest
+import com.project.banco.domains.Conta
 import com.project.banco.exceptions.ContaNotFoundException
 import com.project.banco.repository.BancoRepository
 import com.project.banco.repository.jpa.entity.ContaEntity
@@ -12,9 +12,12 @@ import java.util.*
 @Component
 class BancoServiceImpl(val bancoRepository: BancoRepository) : BancoService {
 
-    override fun createAccount(conta: ContaRequest): Optional<ContaEntity> {
-        this.bancoRepository.save(conta)
-        return bancoRepository.findById(conta.idConta)
+    override fun createAccount(conta: Conta): ContaEntity {
+        return this.bancoRepository.save(conta)
+    }
+
+    override fun getAll(): MutableList<ContaEntity> {
+        return this.bancoRepository.findAll()
     }
 
     override fun getContaById(idConta: Long): ContaEntity? {
@@ -24,11 +27,11 @@ class BancoServiceImpl(val bancoRepository: BancoRepository) : BancoService {
         }else throw ContaNotFoundException()
     }
 
-    override fun adicionarSaldo(valor: Double, idConta: Long): Conta? {
+    override fun adicionarSaldo(valor: Double, idConta: Long): ContaEntity? {
         TODO("Not yet implemented")
     }
 
-    override fun diminuirSaldo(valor: Double, idConta: Long): Conta? {
+    override fun diminuirSaldo(valor: Double, idConta: Long): ContaEntity? {
         TODO("Not yet implemented")
     }
 

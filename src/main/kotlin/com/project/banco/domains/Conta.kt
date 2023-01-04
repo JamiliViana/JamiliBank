@@ -1,7 +1,7 @@
 package com.project.banco.domains
 
-data class Conta(val idConta:Long,
-            var saldo:Double = 0.0,
-//            val cliente: Cliente
-            ) {
+import com.project.banco.controller.request.ContaRequest
+
+data class Conta(    val idConta: Long? = null,
+                     val saldo: Double?) {
 }

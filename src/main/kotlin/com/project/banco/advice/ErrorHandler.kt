@@ -13,14 +13,14 @@ import org.springframework.web.context.request.WebRequest
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler
 @ControllerAdvice
 class ErrorHandler() : ResponseEntityExceptionHandler() {
-    override fun handleMethodArgumentNotValid(ex: MethodArgumentNotValidException,
-                                              headers: HttpHeaders,
-                                              status: HttpStatusCode,
-                                              request: WebRequest): ResponseEntity<Any>? {
-        val message = mutableListOf<String>()
-        ex.bindingResult.allErrors.forEach {message.add("${it.defaultMessage}") }
-        return handleExceptionInternal(ex, message, headers, HttpStatus.BAD_REQUEST, request)
-    }
+//    override fun handleMethodArgumentNotValid(ex: MethodArgumentNotValidException,
+//                                              headers: HttpHeaders,
+//                                              status: HttpStatusCode,
+//                                              request: WebRequest): ResponseEntity<Any>? {
+//        val message = mutableListOf<String>()
+//        ex.bindingResult.allErrors.forEach {message.add("${it.defaultMessage}") }
+//        return handleExceptionInternal(ex, message, headers, HttpStatus.BAD_REQUEST, request)
+//    }
 
     @ExceptionHandler(ContaNotFoundException::class)
     fun PromocaoNotFoundExceptionHandler(exception:Exception): ResponseEntity<ErrorMessage>{

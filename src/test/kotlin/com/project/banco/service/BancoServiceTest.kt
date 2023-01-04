@@ -2,7 +2,6 @@ package com.project.banco.service
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.project.banco.controller.request.ContaRequest
-import com.project.banco.domains.Cliente
 import org.junit.jupiter.api.Assertions
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
@@ -28,8 +27,7 @@ class BancoServiceTest () {
 
         val conta = ContaRequest (
             1,
-            0.1,
-            cliente = Cliente("2123","Jamili")
+            0.1
         )
         val resultado = mockMvc?.perform(
             MockMvcRequestBuilders.post("/bank")
@@ -41,9 +39,8 @@ class BancoServiceTest () {
 
 
         val contaReturn = service?.getContaById(contaResultado!!.idConta)
+        Assertions.assertEquals(conta.idConta,contaReturn?.idConta)
         Assertions.assertEquals(conta.saldo,contaReturn?.saldo)
-        Assertions.assertEquals(conta.cliente.cpf,contaReturn?.clienteEntity?.cpf)
-        Assertions.assertEquals(conta.cliente.nome, contaReturn?.clienteEntity?.nome)
     }
 //
 //    @Test

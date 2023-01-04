@@ -10,9 +10,9 @@ import java.util.*
 interface BancoRepository{
     fun findById(idConta:Long): Optional<ContaEntity>
     fun deleteById(idConta: Long)
-    fun findAll()
+    fun findAll(): MutableList<ContaEntity>
     fun setSaldoAumentado(valor:Double, idConta: Long)
     fun setSaldoReduzido(valor:Double, idConta: Long)
     fun getSaldoById(idConta: Long)
-    fun save(conta: ContaRequest)
+    fun save(conta: Conta): ContaEntity
 }

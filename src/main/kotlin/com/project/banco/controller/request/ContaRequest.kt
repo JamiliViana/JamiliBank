@@ -1,9 +1,10 @@
 package com.project.banco.controller.request
 
 import com.fasterxml.jackson.annotation.JsonInclude
+import jakarta.validation.constraints.NotBlank
 
-@JsonInclude(JsonInclude.Include.NON_NULL)
-data class ContaRequest(val idConta:Long,
-                        var saldo:Double
+data class ContaRequest(
+    val idConta:Long =1,
+    var saldo:Double
 )  {
 }
