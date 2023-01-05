@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Assertions
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.test.web.servlet.MockMvc
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers
 
 @AutoConfigureMockMvc
@@ -29,16 +29,14 @@ class BancoServiceTest () {
             1,
             0.1
         )
-        val resultado = mockMvc?.perform(
-            MockMvcRequestBuilders.post("/bank")
+        val resultado = mockMvc?.perform(post("/banco")
             .contentType("application/json")
             .content(objectMapper!!.writeValueAsString(conta)))
             ?.andExpect(MockMvcResultMatchers.status().isCreated)
             ?.andReturn()?.response?.contentAsString
-        val contaResultado = objectMapper?.readValue(resultado,ContaRequest::class.java)
 
 
-        val contaReturn = service?.getContaById(contaResultado!!.idConta)
+        val contaReturn = service?.getContaById(conta.idConta)
         Assertions.assertEquals(conta.idConta,contaReturn?.idConta)
         Assertions.assertEquals(conta.saldo,contaReturn?.saldo)
     }

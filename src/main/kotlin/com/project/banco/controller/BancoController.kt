@@ -2,6 +2,7 @@ package com.project.banco.controller
 
 import com.project.banco.controller.request.ContaRequest
 import com.project.banco.domains.Conta
+import com.project.banco.repository.jpa.entity.ContaEntity
 import com.project.banco.service.BancoService
 import jakarta.validation.Valid
 import org.springframework.http.HttpStatus
@@ -19,8 +20,9 @@ class BancoController (val bancoService : BancoService){
     @ResponseStatus(HttpStatus.CREATED)
     fun create(@RequestBody contaRequest: ContaRequest) = this.bancoService.createAccount(mapContaDomain(contaRequest))
 
-
-    @GetMapping
+    @GetMapping("/{idConta}")
     @ResponseStatus(HttpStatus.OK)
-    fun getAll()= this.bancoService.getAll()
+    fun getId(@PathVariable idConta: Long) = this.bancoService.getContaById(idConta)
+
+
 }

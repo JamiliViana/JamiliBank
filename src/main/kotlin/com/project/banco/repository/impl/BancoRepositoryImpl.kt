@@ -1,10 +1,11 @@
 package com.project.banco.repository.impl
 
-import com.project.banco.controller.request.ContaRequest
 import com.project.banco.domains.Conta
 import com.project.banco.repository.BancoRepository
 import com.project.banco.repository.jpa.entity.ContaEntity
 import com.project.banco.repository.jpa.repository.BancoJpaRepository
+import org.springframework.data.jpa.repository.Modifying
+import org.springframework.data.jpa.repository.Query
 import org.springframework.stereotype.Component
 import java.util.*
 
@@ -28,14 +29,12 @@ class BancoRepositoryImpl(val bancoJpaRepository: BancoJpaRepository): BancoRepo
 
     override fun findAll() = bancoJpaRepository.findAll()
 
-
-    override fun setSaldoAumentado(valor: Double, idConta: Long) {
-        TODO("Not yet implemented")//Depois vou complementar com @Query
-    }
-
-    override fun setSaldoReduzido(valor: Double, idConta: Long) {
-        TODO("Not yet implemented")//Depois vou complementar com @Query
-    }
+    @Modifying
+    @Query(value = "update conta c set c.saldo = c.saldo + ?1 where c.id = ?2")
+    override fun setSaldoAumentado(valor: Double, idConta: Long){}
+    @Modifying
+    @Query(value = "update conta c set c.saldo = c.saldo - ?1 where c.id = ?2")
+    override fun setSaldoReduzido(valor: Double, idConta: Long){}
 
     override fun getSaldoById(idConta: Long) {
         TODO("Not yet implemented")//Depois vou complementar com @Query
