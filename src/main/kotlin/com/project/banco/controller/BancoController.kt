@@ -18,7 +18,7 @@ class BancoController (val bancoService : BancoService){
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    fun create(@RequestBody contaRequest: ContaRequest) = this.bancoService.createAccount(mapContaDomain(contaRequest))
+    fun create(@RequestBody @Valid contaRequest: ContaRequest) = this.bancoService.createAccount(mapContaDomain(contaRequest))
 
     @GetMapping("/{idConta}")
     @ResponseStatus(HttpStatus.OK)
