@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.MethodArgumentNotValidException
 import org.springframework.web.bind.annotation.ControllerAdvice
 import org.springframework.web.bind.annotation.ExceptionHandler
+import org.springframework.web.bind.annotation.ResponseStatus
 import org.springframework.web.context.request.WebRequest
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler
 @ControllerAdvice
@@ -22,10 +23,10 @@ class ErrorHandler() : ResponseEntityExceptionHandler() {
         return handleExceptionInternal(ex, message, headers, HttpStatus.BAD_REQUEST, request)
     }
 
+    @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler(ContaNotFoundException::class)
-    fun PromocaoNotFoundExceptionHandler(exception:Exception): ResponseEntity<ErrorMessage>{
-        return ResponseEntity(ErrorMessage("Conta não localizada"),
-            HttpStatus.NOT_FOUND)
+    fun ContaNotFoundExceptionHandler(exception:Exception): ErrorMessage{
+        return ErrorMessage("Conta não localizada")
     }
 
 }
