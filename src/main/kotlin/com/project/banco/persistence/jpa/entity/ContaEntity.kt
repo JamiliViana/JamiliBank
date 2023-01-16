@@ -11,6 +11,6 @@ import jakarta.persistence.Id
 data class ContaEntity(
     @Id
     val cpf: String,
-    val saldo: Double
+    val saldo: Double = 0.0
 )
 

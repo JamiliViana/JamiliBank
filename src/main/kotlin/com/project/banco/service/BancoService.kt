@@ -9,8 +9,6 @@ import java.util.*
 interface BancoService {
 
     fun deleteAll()
-    fun createAccount(conta: Conta): ContaEntity
-    fun getAll(): MutableList<ContaEntity>
-    fun getByCpf(cpf:String): ContaEntity?
-    fun setSaldo(cpf: String, valor:Double): ContaEntity?
+    fun createAccount(conta: Conta): Conta?
+    fun getByCpf(cpf:String): Conta
 }

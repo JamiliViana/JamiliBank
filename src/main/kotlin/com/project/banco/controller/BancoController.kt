@@ -5,15 +5,20 @@ import com.project.banco.domains.Conta
 import com.project.banco.service.BancoService
 import jakarta.validation.Valid
 import org.springframework.http.HttpStatus
-import org.springframework.web.bind.annotation.*
+import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.ResponseStatus
+import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.bind.annotation.RequestParam
+import org.springframework.web.bind.annotation.GetMapping
 
 @RestController
 @RequestMapping(value = ["/banco"])
 class BancoController (val bancoService : BancoService){
 
     private fun mapContaDomain (contaRequest: ContaRequest) = Conta(
-        cpf = contaRequest.cpf!!,
-        saldo = contaRequest.saldo!!
+        cpf = contaRequest.cpf!!
     )
 
     @PostMapping
@@ -24,8 +29,5 @@ class BancoController (val bancoService : BancoService){
     @ResponseStatus(HttpStatus.OK)
     fun getByCpf(@RequestParam(required = true) cpf: String) = this.bancoService.getByCpf(cpf)
 
-    @GetMapping()
-    @ResponseStatus(HttpStatus.OK)
-    fun getAll() = this.bancoService.getAll()
 
 }

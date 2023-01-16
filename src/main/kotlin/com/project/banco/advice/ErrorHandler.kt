@@ -1,6 +1,7 @@
 package com.project.banco.advice
 
 import com.project.banco.domains.ErrorMessage
+import com.project.banco.exceptions.ContaAlreadyExistsException
 import com.project.banco.exceptions.ContaNotFoundException
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus
@@ -12,6 +13,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.ResponseStatus
 import org.springframework.web.context.request.WebRequest
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler
+import kotlin.math.E
+
 @ControllerAdvice
 class ErrorHandler() : ResponseEntityExceptionHandler() {
     override fun handleMethodArgumentNotValid(ex: MethodArgumentNotValidException,
@@ -25,8 +28,13 @@ class ErrorHandler() : ResponseEntityExceptionHandler() {
 
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler(ContaNotFoundException::class)
-    fun ContaNotFoundExceptionHandler(exception:Exception): ErrorMessage{
-        return ErrorMessage("Conta não localizada")
+    fun ContaNotFoundExceptionHandler(exception:Exception): ResponseEntity<ErrorMessage>{
+        return ResponseEntity(ErrorMessage("Conta não localizada"),HttpStatus.NOT_FOUND)
     }
 
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ExceptionHandler(ContaAlreadyExistsException::class)
+    fun ContaAlreadyExistsExceptionHandler(exception:Exception): ResponseEntity<ErrorMessage>{
+        return ResponseEntity(ErrorMessage("Conta ja está cadastrada"),HttpStatus.BAD_REQUEST)
+    }
 }

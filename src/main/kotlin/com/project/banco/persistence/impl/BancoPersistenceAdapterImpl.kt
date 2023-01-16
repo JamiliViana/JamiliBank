@@ -5,7 +5,7 @@ import com.project.banco.persistence.BancoPersistenceAdapter
 import com.project.banco.persistence.jpa.entity.ContaEntity
 import com.project.banco.persistence.jpa.repository.BancoJpaRepository
 import org.springframework.stereotype.Component
-import java.util.Optional
+
 
 @Component
 class BancoPersistenceAdapterImpl(val bancoJpaRepository: BancoJpaRepository): BancoPersistenceAdapter {
@@ -14,22 +14,26 @@ class BancoPersistenceAdapterImpl(val bancoJpaRepository: BancoJpaRepository): B
         cpf = conta.cpf,
         saldo = conta.saldo
     )
+    private fun parseEntityToDomain (contaEntity: ContaEntity) = Conta(
+        cpf = contaEntity.cpf,
+        saldo = contaEntity.saldo
+    )
 
-    override fun save(conta: Conta): ContaEntity {
-        return bancoJpaRepository.save(mapContaEntity(conta))
+    override fun save(conta: Conta): Conta {
+        var salvandoEntity =  bancoJpaRepository.save(mapContaEntity(conta))
+        var recebeDomain = parseEntityToDomain(salvandoEntity)
+        return recebeDomain
     }
 
     override fun deleteAll() {
         bancoJpaRepository.deleteAll()
     }
 
-    override fun deleteById(cpf: String) {
-        bancoJpaRepository.deleteById(cpf)
+    override fun findByCpf(cpf: String): Conta? {
+        var findEntity = bancoJpaRepository.findById(cpf).orElse(null)
+        if (findEntity != null) {
+            return parseEntityToDomain(findEntity)
+        }  else return null
     }
-
-    override fun findByCpf(cpf: String): Optional<ContaEntity> {
-        return bancoJpaRepository.findById(cpf)
-    }
-    override fun findAll() = bancoJpaRepository.findAll()
 
 }
