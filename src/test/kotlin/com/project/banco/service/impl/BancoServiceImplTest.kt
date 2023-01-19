@@ -4,13 +4,17 @@ import com.project.banco.domains.Conta
 import com.project.banco.exceptions.ContaAlreadyExistsException
 import com.project.banco.exceptions.ContaNotFoundException
 import com.project.banco.persistence.BancoPersistenceAdapter
+import com.project.banco.service.BancoService
 import io.mockk.MockKAnnotations
 import io.mockk.every
 import io.mockk.impl.annotations.InjectMockKs
 import io.mockk.impl.annotations.MockK
+import io.mockk.mockk
+import io.mockk.verify
 import org.junit.Before
 import org.junit.Test
 import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.Assertions.*
 
 
 class BancoServiceImplTest {
@@ -67,4 +71,31 @@ class BancoServiceImplTest {
         Assertions.assertThrows(ContaNotFoundException::class.java)
         { bancoService.getByCpf("1") }
     }
+
+    @Test
+    fun deveRealizarDeposito(){
+        val conta = Conta("teste",0.0)
+        every { bancoPersistenceAdapter.findByCpf(any()) } returns null
+        every { bancoPersistenceAdapter.save(conta) } returns conta
+        bancoService.createAccount(conta)
+
+        val valorDeposito = 10.0
+
+        every { bancoPersistenceAdapter.findByCpf("teste") } returns conta
+
+        val recebeContaAtulizada =  bancoService.deposito(conta.cpf, valorDeposito)
+        Assertions.assertEquals(valorDeposito, recebeContaAtulizada!!.saldo)
+    }
+    @Test
+    fun testDepositoWithNotFoundAccount() {
+        val cpf = "123.456.789-10"
+        val valor = 100.0
+
+        every { bancoPersistenceAdapter.findByCpf(cpf) } returns null
+
+        assertThrows(ContaNotFoundException::class.java) {
+            bancoService.deposito(cpf, valor)
+        }
+    }
+
 }

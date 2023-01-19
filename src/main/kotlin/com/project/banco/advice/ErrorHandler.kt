@@ -3,6 +3,7 @@ package com.project.banco.advice
 import com.project.banco.domains.ErrorMessage
 import com.project.banco.exceptions.ContaAlreadyExistsException
 import com.project.banco.exceptions.ContaNotFoundException
+import com.project.banco.exceptions.SaldoNotEnoughException
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus
 import org.springframework.http.HttpStatusCode
@@ -32,9 +33,15 @@ class ErrorHandler() : ResponseEntityExceptionHandler() {
         return ResponseEntity(ErrorMessage("Conta não localizada"),HttpStatus.NOT_FOUND)
     }
 
-    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(ContaAlreadyExistsException::class)
     fun ContaAlreadyExistsExceptionHandler(exception:Exception): ResponseEntity<ErrorMessage>{
         return ResponseEntity(ErrorMessage("Conta ja está cadastrada"),HttpStatus.BAD_REQUEST)
+    }
+
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    @ExceptionHandler(SaldoNotEnoughException::class)
+    fun SaldoNotEnoughExceptionHandler(exception:Exception): ResponseEntity<ErrorMessage>{
+        return ResponseEntity(ErrorMessage("Saldo insuficiente"),HttpStatus.UNAUTHORIZED)
     }
 }
