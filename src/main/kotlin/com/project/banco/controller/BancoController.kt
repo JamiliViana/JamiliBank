@@ -40,4 +40,8 @@ class BancoController (val bancoService : BancoService){
     @ResponseStatus(HttpStatus.OK)
     fun withdraw(@PathVariable cpf: String, @RequestBody transacaoRequest: TransacaoRequest) = this.bancoService.saque(cpf,transacaoRequest.valor)
 
+    @PutMapping("/transferencia/{cpfOrigem}/{cpfDestino}")
+    @ResponseStatus(HttpStatus.OK)
+    fun transfer(@PathVariable cpfOrigem: String, @PathVariable cpfDestino: String, @RequestBody transacaoRequest: TransacaoRequest) =
+        this.bancoService.transferencia(transacaoRequest.valor, cpfOrigem, cpfDestino)
 }

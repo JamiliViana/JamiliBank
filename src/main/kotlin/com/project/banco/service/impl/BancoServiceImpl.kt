@@ -2,6 +2,7 @@ package com.project.banco.service.impl
 
 import com.project.banco.domains.Conta
 import com.project.banco.exceptions.ContaAlreadyExistsException
+import com.project.banco.exceptions.ContaDestinoNotFoundException
 import com.project.banco.exceptions.ContaNotFoundException
 import com.project.banco.exceptions.SaldoNotEnoughException
 import com.project.banco.persistence.BancoPersistenceAdapter
@@ -45,6 +46,27 @@ class BancoServiceImpl(val bancoPersistenceAdapter: BancoPersistenceAdapter) : B
                 receberDadosConta.saldo = diminuirSaldoSaque
                 return this.bancoPersistenceAdapter.save(receberDadosConta)
             }else throw SaldoNotEnoughException()
+        }else throw ContaNotFoundException()
+    }
+
+    override fun transferencia(valor: Double, cpfOrigem: String, cpfDestino: String): Conta? {
+        val receberDadosContaOrigem = this.bancoPersistenceAdapter.findByCpf(cpfOrigem)
+        val receberDadosContaDestino = this.bancoPersistenceAdapter.findByCpf(cpfDestino)
+
+        if (receberDadosContaOrigem != null){
+            if(receberDadosContaDestino != null){
+                if (receberDadosContaOrigem.saldo >= valor){
+                    val diminuirSaldoOrigem = receberDadosContaOrigem.saldo - valor
+                    receberDadosContaOrigem.saldo = diminuirSaldoOrigem
+                    this.bancoPersistenceAdapter.save(receberDadosContaOrigem)
+
+                    val somarSaldoDestino = receberDadosContaDestino.saldo + valor
+                    receberDadosContaDestino.saldo = somarSaldoDestino
+                    this.bancoPersistenceAdapter.save(receberDadosContaDestino)
+
+                    return receberDadosContaOrigem
+                }else throw SaldoNotEnoughException()
+            }else throw ContaDestinoNotFoundException()
         }else throw ContaNotFoundException()
     }
 

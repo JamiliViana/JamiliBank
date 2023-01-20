@@ -10,4 +10,5 @@ interface BancoService {
     fun getByCpf(cpf:String): Conta
     fun deposito(cpf: String, valor:Double): Conta?
     fun saque(cpf: String,valor: Double): Conta?
+    fun transferencia(valor:Double, cpfOrigem: String, cpfDestino: String): Conta?
 }

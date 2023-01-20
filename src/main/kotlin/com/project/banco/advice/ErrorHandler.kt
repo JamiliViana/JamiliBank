@@ -2,6 +2,7 @@ package com.project.banco.advice
 
 import com.project.banco.domains.ErrorMessage
 import com.project.banco.exceptions.ContaAlreadyExistsException
+import com.project.banco.exceptions.ContaDestinoNotFoundException
 import com.project.banco.exceptions.ContaNotFoundException
 import com.project.banco.exceptions.SaldoNotEnoughException
 import org.springframework.http.HttpHeaders
@@ -14,7 +15,6 @@ import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.ResponseStatus
 import org.springframework.web.context.request.WebRequest
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler
-import kotlin.math.E
 
 @ControllerAdvice
 class ErrorHandler() : ResponseEntityExceptionHandler() {
@@ -43,5 +43,11 @@ class ErrorHandler() : ResponseEntityExceptionHandler() {
     @ExceptionHandler(SaldoNotEnoughException::class)
     fun SaldoNotEnoughExceptionHandler(exception:Exception): ResponseEntity<ErrorMessage>{
         return ResponseEntity(ErrorMessage("Saldo insuficiente"),HttpStatus.UNAUTHORIZED)
+    }
+
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ExceptionHandler(ContaDestinoNotFoundException::class)
+    fun ContaDestinoNotFoundExceptionHandler(exception:Exception): ResponseEntity<ErrorMessage>{
+        return ResponseEntity(ErrorMessage("Conta Destino não localizada"),HttpStatus.NOT_FOUND)
     }
 }
