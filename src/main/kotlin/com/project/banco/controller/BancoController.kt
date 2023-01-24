@@ -34,14 +34,18 @@ class BancoController (val bancoService : BancoService){
 
     @PutMapping("/deposito/{cpf}")
     @ResponseStatus(HttpStatus.OK)
-    fun deposit(@PathVariable cpf: String, @RequestBody transacaoRequest: TransacaoRequest) = this.bancoService.deposito(cpf,transacaoRequest.valor)
+    fun deposit(@PathVariable cpf: String, @RequestBody @Valid transacaoRequest: TransacaoRequest) = this.bancoService.deposito(cpf,
+        transacaoRequest.valor!!
+    )
 
     @PutMapping("/saque/{cpf}")
     @ResponseStatus(HttpStatus.OK)
-    fun withdraw(@PathVariable cpf: String, @RequestBody transacaoRequest: TransacaoRequest) = this.bancoService.saque(cpf,transacaoRequest.valor)
+    fun withdraw(@PathVariable cpf: String, @RequestBody @Valid transacaoRequest: TransacaoRequest) = this.bancoService.saque(cpf,
+        transacaoRequest.valor!!
+    )
 
     @PutMapping("/transferencia/{cpfOrigem}/{cpfDestino}")
     @ResponseStatus(HttpStatus.OK)
-    fun transfer(@PathVariable cpfOrigem: String, @PathVariable cpfDestino: String, @RequestBody transacaoRequest: TransacaoRequest) =
-        this.bancoService.transferencia(transacaoRequest.valor, cpfOrigem, cpfDestino)
+    fun transfer(@PathVariable cpfOrigem: String, @PathVariable cpfDestino: String, @RequestBody @Valid transacaoRequest: TransacaoRequest) =
+        this.bancoService.transferencia(transacaoRequest.valor!!, cpfOrigem, cpfDestino)
 }

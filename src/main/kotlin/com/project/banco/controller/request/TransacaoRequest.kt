@@ -1,4 +1,8 @@
 package com.project.banco.controller.request
 
-data class TransacaoRequest(val valor:Double) {
+import jakarta.validation.constraints.NotNull
+
+data class TransacaoRequest(
+    @field:NotNull(message = "Escrever o valor é obrigatório")
+    val valor:Double?) {
 }
