@@ -1,8 +1,12 @@
 package com.project.banco.advice
 
 import com.project.banco.domains.ErrorMessage
-import com.project.banco.exceptions.ContaAlreadyExistsException
+import com.project.banco.exceptions.ContaDestinoNotFoundException
 import com.project.banco.exceptions.ContaNotFoundException
+import com.project.banco.exceptions.SaldoNotEnoughException
+import com.project.banco.exceptions.ValueNotAcceptedException
+import com.project.banco.exceptions.SameAccountException
+import com.project.banco.exceptions.ContaAlreadyExistsException
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus
 import org.springframework.http.HttpStatusCode
@@ -13,7 +17,6 @@ import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.ResponseStatus
 import org.springframework.web.context.request.WebRequest
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler
-import kotlin.math.E
 
 @ControllerAdvice
 class ErrorHandler() : ResponseEntityExceptionHandler() {
@@ -32,9 +35,33 @@ class ErrorHandler() : ResponseEntityExceptionHandler() {
         return ResponseEntity(ErrorMessage("Conta não localizada"),HttpStatus.NOT_FOUND)
     }
 
-    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(ContaAlreadyExistsException::class)
     fun ContaAlreadyExistsExceptionHandler(exception:Exception): ResponseEntity<ErrorMessage>{
         return ResponseEntity(ErrorMessage("Conta ja está cadastrada"),HttpStatus.BAD_REQUEST)
+    }
+
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    @ExceptionHandler(SaldoNotEnoughException::class)
+    fun SaldoNotEnoughExceptionHandler(exception:Exception): ResponseEntity<ErrorMessage>{
+        return ResponseEntity(ErrorMessage("Saldo insuficiente"),HttpStatus.UNAUTHORIZED)
+    }
+
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ExceptionHandler(ContaDestinoNotFoundException::class)
+    fun ContaDestinoNotFoundExceptionHandler(exception:Exception): ResponseEntity<ErrorMessage>{
+        return ResponseEntity(ErrorMessage("Conta Destino não localizada"),HttpStatus.NOT_FOUND)
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(ValueNotAcceptedException::class)
+    fun ValueNotAcceptedExceptionHandler(exception:Exception): ResponseEntity<ErrorMessage>{
+        return ResponseEntity(ErrorMessage("Valor é negativo, escreva um valor maior que 0"),HttpStatus.BAD_REQUEST)
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(SameAccountException::class)
+    fun SameAccountExceptionHandler(exception:Exception): ResponseEntity<ErrorMessage>{
+        return ResponseEntity(ErrorMessage("A Conta origem e destino são as mesmas"),HttpStatus.BAD_REQUEST)
     }
 }
