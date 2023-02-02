@@ -7,6 +7,5 @@ import java.util.*
 
 @Repository
 interface TransactionJpaRepository : JpaRepository<AccountTransactionsEntity, Long> {
-
     fun findByAccountCpf(cpf: String): Optional<List<AccountTransactionsEntity>>
 }
