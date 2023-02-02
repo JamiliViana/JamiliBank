@@ -2,15 +2,16 @@ package com.project.banco.persistence.jpa.entity
 
 import com.project.banco.emptyConstructorOfDataCls.NoArg
 import jakarta.persistence.Entity
-import jakarta.persistence.GeneratedValue
-import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
+import jakarta.persistence.OneToMany
 
 @Entity
 @NoArg
-data class ContaEntity(
+data class AccountEntity(
     @Id
     val cpf: String,
-    val saldo: Double = 0.0
+    val balance: Double = 0.0,
+    @OneToMany
+    val accountTransactions: List<AccountTransactionsEntity> = listOf()
 )
 

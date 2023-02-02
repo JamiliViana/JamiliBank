@@ -1,12 +1,7 @@
 package com.project.banco.advice
 
-import com.project.banco.domains.ErrorMessage
-import com.project.banco.exceptions.ContaDestinoNotFoundException
-import com.project.banco.exceptions.ContaNotFoundException
-import com.project.banco.exceptions.SaldoNotEnoughException
-import com.project.banco.exceptions.ValueNotAcceptedException
-import com.project.banco.exceptions.SameAccountException
-import com.project.banco.exceptions.ContaAlreadyExistsException
+import com.project.banco.advice.exceptions.*
+import com.project.banco.service.domains.ErrorMessage
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus
 import org.springframework.http.HttpStatusCode
@@ -63,5 +58,11 @@ class ErrorHandler() : ResponseEntityExceptionHandler() {
     @ExceptionHandler(SameAccountException::class)
     fun SameAccountExceptionHandler(exception:Exception): ResponseEntity<ErrorMessage>{
         return ResponseEntity(ErrorMessage("A Conta origem e destino são as mesmas"),HttpStatus.BAD_REQUEST)
+    }
+
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ExceptionHandler(TransactionsNotFoundException::class)
+    fun TransactionsNotFoundExceptionHandler(exception:Exception): ResponseEntity<ErrorMessage>{
+        return ResponseEntity(ErrorMessage("Nenhuma transação foi encontrada"),HttpStatus.NOT_FOUND)
     }
 }
