@@ -1,4 +1,4 @@
-package com.project.banco.exceptions
+package com.project.banco.advice.exceptions
 
 class ValueNotAcceptedException:Exception() {
 }
